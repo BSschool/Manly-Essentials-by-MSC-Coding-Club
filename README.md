@@ -6,4 +6,5 @@ Have fun with the website. We provide your timetable, a free movie player and ot
 If you join us on Tuesday lunch at Room 169, we can teach you how to add more to this website and personalise it for your use.
 
 Thanks,
+
 Coding Club Team
