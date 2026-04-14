@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Coding Club Website</title>
+    <style>
+        body {
+            background-color: rgb(21, 21, 69);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        /* Main welcome message */
+        #message {
+            font-size: 24px;
+            margin-top: 20px;
+            color: rgb(230, 108, 14);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Row of coding club images */
+        #image_container {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            margin-top: 20px;
+        }
+
+        .CCImg {
+            width: 100px;
+        }
+
+        /* Movie player form + controls */
+        #movie-form {
+            margin: 40px auto 20px auto;
+        }
+
+        #imdbInput {
+            padding: 8px;
+            width: 220px;
+        }
+
+        #typeSelect {
+            padding: 8px;
+            margin-left: 8px;
+        }
+
+        /* Optional: hide a normal button, we’re using an image instead */
+        #loadButton {
+            display: none;
+        }
+
+        #error {
+            color: #ff8080;
+            margin-top: 10px;
+            height: 1.2em;
+        }
+
+        /* Player starts hidden */
+        #playerWrapper {
+            margin: 30px auto;
+            width: 80%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            display: none;
+        }
+
+        #playerFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .clickable-img {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .clickable-img:hover {
+            transform: scale(1.5); /* slightly bigger on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Your original welcome text -->
+    <h1 id="message">Welcome to the Manly Essentials</h1>
+    <br>
+    <h3>Brought to the students of Manly by Coding Club</h3>
+
+    <!-- Your original 3 images in a horizontal row -->
+    <div id="image_container">
+        <img class="CCImg" src="hk.png" alt="HK">
+        <img class="CCImg" src="btd6.png" alt="BTD6">
+        <img class="CCImg" src="brawl.png" alt="Brawl">
+    </div>
+
+    <!-- Movie/imdb player section -->
+    <h2>FREE Movie and Video Player</h2>
+    <br>
+    <p>
+If you want uninterrupted viewing and no ad breaks when you go to pause, play or skip, I suggest downoading the extension named TabBlock
+<br>
+(You will have to turn off if you wantto use the web for searching, only use for watching your show)
+<br>
+<br>
+To find your IMDB ID, go onto IMDB, find your show/movie click on the link where you will see a small id (eg: tt1234567)
+    </p>
+
+    <div id="movie-form">
+        <label for="imdbInput">Enter IMDB ID, then click on the movie camera: </label>
+        <input type="text" id="imdbInput" placeholder="ID">
+
+        <!-- choose movie or episode -->
+        <select id="typeSelect">
+            <option value="movie">Movie</option>
+            <option value="episode">Episode</option>
+        </select>
+
+        <!-- Clickable image instead of a button -->
+        <img id="playImage" class="clickable-img" src="movie.png" alt="Play" style="width:80px; vertical-align:middle; margin-left:8px;">
+    </div>
+
+    <div id="error"></div>
+
+    <div id="playerWrapper">
+        <iframe id="playerFrame" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        const input = document.getElementById("imdbInput");
+        const typeSelect = document.getElementById("typeSelect");
+        const playImage = document.getElementById("playImage");
+        const frame = document.getElementById("playerFrame");
+        const error = document.getElementById("error");
+        const playerWrapper = document.getElementById("playerWrapper");
+
+        // Two different base embed URLs: one for movies, one for episodes
+        const MOVIE_BASE_URL   = "https://vidsrc-embed.ru/embed/movie/";
+        const EPISODE_BASE_URL = "https://vidsrc-embed.ru/embed/tv/";
+
+        function loadVideo() {
+            const imdbId = input.value.trim();
+            const type = typeSelect.value; // "movie" or "episode"
+            const imdbPattern = /^tt\d{3,}$/;
+
+            if (!imdbPattern.test(imdbId)) {
+                error.textContent = "Please enter a valid IMDB ID like tt1234567.";
+                frame.src = "";
+                playerWrapper.style.display = "none";
+                return;
+            }
+
+            error.textContent = "";
+
+            // choose which base URL to use
+            let baseUrl;
+            if (type === "movie") {
+                baseUrl = MOVIE_BASE_URL;
+            } else {
+                baseUrl = EPISODE_BASE_URL;
+            }
+
+            const embedUrl = baseUrl + encodeURIComponent(imdbId);
+
+            frame.src = embedUrl;
+            playerWrapper.style.display = "block";  // reveal player
+        }
+
+        // Click on the image to load video
+        playImage.addEventListener("click", loadVideo);
+
+        // Press Enter in the input to load video
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                loadVideo();
+            }
+        });
+    </script>
+
+    <h2>For Timetables, click on the icon below:</h2>
+
+    <a href="timetable.oggyp.com">
+    <img src="schoollogo.png" height="100" class="clickable-img">
+    </a>
+
+    <h2>
+Projects by the original Coding Club
+
+    </h2>
+
+<a href="oggyp.com">
+    <img src="oggyp img.svg" height="100" class="clickable-img">
+</a>
+
+</body>
+</html>
